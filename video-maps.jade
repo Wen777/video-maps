@@ -1,6 +1,6 @@
 
 head
-  title Video Maps
+  title TW.R Group
   link(type="text/css",rel="stylesheet",href="https://vjs.zencdn.net/4.5.1/video-js.css")
   script(src="https://vjs.zencdn.net/4.5.1/video.js")
   script(src="http://guaries.opennote.info/wp-content/uploads/2014/09/youtube.js")
@@ -30,7 +30,8 @@ body
     
     .text-center
       h1 Search the Video You Want ... 
-      p MLDM Monday, Taiwan useR Group, Taipei.py, COSCUP, ...
+
+      p MLDM Monday, Taiwan useR Group, COSCUP, ... and other open source communities ...
     
     .input-group
       span.input-group-addon Search
@@ -38,42 +39,60 @@ body
       span.input-group-addon X
 
     br 
-    
-    .row.clearfix
-      .col-md-12.column
-        .row
-          .col-md-4
-            .thumbnail
-              video.video-js.vjs-default-skin(src="",controls,preload="auto",width="350",height="225",data-setup='{ "techOrder": ["youtube"], "src": "http://www.youtube.com/embed/OCQU6M4pPiw" }')
-              //- iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/OCQU6M4pPiw",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+    +videoList
+
+    //- .row.clearfix
+    //-   .col-md-12.column
+    //-     .row
+    //-       .col-md-4
+    //-         .thumbnail
+    //-           video.video-js.vjs-default-skin(src="",controls,preload="auto",width="350",height="225",data-setup='{ "techOrder": ["youtube"], "src": "http://www.youtube.com/embed/OCQU6M4pPiw" }')
+    //-           //- iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/OCQU6M4pPiw",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
           
-          .col-md-4
-            .thumbnail
-              iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/xt1_oXJtB3M",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+    //-       .col-md-4
+    //-         .thumbnail
+    //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/xt1_oXJtB3M",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
 
-          .col-md-4
-            .thumbnail
-              iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/hIdvjh-O69w",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+    //-       .col-md-4
+    //-         .thumbnail
+    //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/hIdvjh-O69w",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
 
-          .col-md-4
-            .thumbnail
-              iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/vteHJEJuNcQ",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+    //-       .col-md-4
+    //-         .thumbnail
+    //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/vteHJEJuNcQ",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
 
-          .col-md-4
-            .thumbnail
-              iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/CLq8MlK3oo0",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+    //-       .col-md-4
+    //-         .thumbnail
+    //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/CLq8MlK3oo0",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
 
-          .col-md-4
-            .thumbnail
-              iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/A1IIcZW5UrI",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+    //-       .col-md-4
+    //-         .thumbnail
+    //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/A1IIcZW5UrI",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
 
-          .col-md-4
-            .thumbnail
-              iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/9K3B3OYMtjY",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+    //-       .col-md-4
+    //-         .thumbnail
+    //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/9K3B3OYMtjY",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
 
+    //-       .col-md-4
+    //-         .thumbnail
+    //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/escsixrqG6M",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+
+
+template(name="videoList")
+  //- h1 {{helloObject.name}}
+  //- br
+  //- each helloObject.data
+  //-   hr
+  //-   h2 {{text}}
+  //-   hr
+  .row.clearfix
+    .col-md-12.column
+      .row
+        each videoList
           .col-md-4
             .thumbnail
-              iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/escsixrqG6M",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
+              video.video-js.vjs-default-skin(src="",controls,preload="auto",width="350",height="225",data-setup='{ "techOrder": ["youtube"], "src": "http://www.youtube.com/embed/{{_id}}" }')
+
 
 
 
