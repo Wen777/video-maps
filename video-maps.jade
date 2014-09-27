@@ -33,11 +33,8 @@ body
 
       p MLDM Monday, Taiwan useR Group, COSCUP, ... and other open source communities ...
     
-    .input-group
-      span.input-group-addon Search
-      input.form-control(type="text")
-      span.input-group-addon X
-
+      +search
+      
     br 
     +videoList
 
@@ -78,6 +75,13 @@ body
     //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/escsixrqG6M",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
 
 
+template(name="search")
+  .input-group
+    span.input-group-addon Search
+    input#searchWords.form-control(type="text")
+    span.input-group-addon X
+
+
 template(name="videoList")
   //- h1 {{helloObject.name}}
   //- br
@@ -90,6 +94,7 @@ template(name="videoList")
       .row
         each videoList
           .col-md-4
+            h2 {{title}}
             .thumbnail
               video.video-js.vjs-default-skin(src="",controls,preload="auto",width="350",height="225",data-setup='{ "techOrder": ["youtube"], "src": "http://www.youtube.com/embed/{{_id}}" }')
 

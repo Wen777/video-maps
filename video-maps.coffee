@@ -1,19 +1,21 @@
 
 
 youtubeVideos = [
-  {_id:"OCQU6M4pPiw"},
-  {_id:"xt1_oXJtB3M"},
-  {_id:"hIdvjh-O69w"},
-  {_id:"vteHJEJuNcQ"},
-  {_id:"CLq8MlK3oo0"},
-  {_id:"A1IIcZW5UrI"},
-  {_id:"9K3B3OYMtjY"},
-  {_id:"escsixrqG6M"},
+  {_id:"OCQU6M4pPiw", title:"r basic"},
+  {_id:"xt1_oXJtB3M", title:"machine learning"},
+  {_id:"hIdvjh-O69w", title:"r advanced"},
+  {_id:"vteHJEJuNcQ", title:"1234"},
+  {_id:"CLq8MlK3oo0", title:"learning r"},
+  {_id:"A1IIcZW5UrI", title:"dboy"},
+  {_id:"9K3B3OYMtjY", title:"dboy 1234"},
+  {_id:"escsixrqG6M", title:"machine gun"},
 ]
 
 @Videos = new Meteor.Collection "ytVideos"
 
 if Meteor.isClient
+  Session.setDefault("searchWords",".*")
+
   Template.videoList.helpers
     # helloTemp: "hello template"
     # helloArray: [{text:"abc"},{text:"fsdfs"},{text:"fsg"}]
@@ -23,7 +25,18 @@ if Meteor.isClient
     
     # videoList: youtubeVideos
 
-    videoList: -> Videos.find {}, {skip:2, limit : 4}
+    videoList: -> 
+      searchWords = Session.get("searchWords")
+      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit : 4}
+
+  Template.search.events
+    "change #searchWords": (e) ->
+      e.stopPropagation()
+      newSearchWords = $(e.target).val()
+      Session.set("searchWords",newSearchWords)
+      # console.log e
+      # console.log $(e.target).val()
+
 
 if Meteor.isServer
   if Videos.find().count() is 0
