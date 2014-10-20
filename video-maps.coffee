@@ -9,9 +9,10 @@ youtubeVideos = [
   {_id:"A1IIcZW5UrI", title:"dboy"},
   {_id:"9K3B3OYMtjY", title:"dboy 1234"},
   {_id:"escsixrqG6M", title:"machine gun"},
+  
 ]
 
-@Videos = new Meteor.Collection "ytVideos"
+@Videos = new Meteor.Collection "ytVideo"
 
 if Meteor.isClient
   Session.setDefault("searchWords",".*")
@@ -27,7 +28,7 @@ if Meteor.isClient
 
     videoList: -> 
       searchWords = Session.get("searchWords")
-      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit : 4}
+      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit : 20}
 
   Template.search.events
     "change #searchWords": (e) ->
@@ -37,7 +38,12 @@ if Meteor.isClient
       # console.log e
       # console.log $(e.target).val()
 
+  Template.video.rendered = ->
+    # console.log @data._id
+    video = Popcorn.youtube("#"+@data._id, 'http://www.youtube.com/embed/'+@data._id)
+    
 
-if Meteor.isServer
-  if Videos.find().count() is 0
-    Videos.insert xx for xx in youtubeVideos
+
+# if Meteor.isServer
+#   if Videos.find().count() is 0
+#     Videos.insert xx for xx in youtubeVideos

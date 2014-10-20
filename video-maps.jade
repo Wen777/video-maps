@@ -4,7 +4,7 @@ head
   link(type="text/css",rel="stylesheet",href="https://vjs.zencdn.net/4.5.1/video-js.css")
   script(src="https://vjs.zencdn.net/4.5.1/video.js")
   script(src="http://guaries.opennote.info/wp-content/uploads/2014/09/youtube.js")
-
+  
 body
   .navbar.navbar-inverse.navbar-fixed-top
     .container
@@ -93,10 +93,17 @@ template(name="videoList")
     .col-md-12.column
       .row
         each videoList
-          .col-md-4
-            h2 {{title}}
-            .thumbnail
-              video.video-js.vjs-default-skin(src="",controls,preload="auto",width="350",height="225",data-setup='{ "techOrder": ["youtube"], "src": "http://www.youtube.com/embed/{{_id}}" }')
+      
+          .col-md-3
+            +video
+            
+  
+template(name="video")
+    p {{title}}
+    .thumbnail
+      div.video(id="{{_id}}")
+      //- video.video-js.vjs-default-skin(src="",controls,width="100%",data-setup='{ "techOrder": ["youtube"], "src": "http://www.youtube.com//watch?v={{_id}}" }')
+
 
 
 
