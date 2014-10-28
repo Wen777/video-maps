@@ -14,6 +14,21 @@ youtubeVideos = [
 
 @Videos = new Meteor.Collection "ytVideos"
 
+Router.configure
+  layoutTemplate: 'layout'
+    
+
+Meteor.startup ->
+  Router.map -> 
+    @route "index",
+      path: "/"
+      template: "videoSearch"
+
+    @route "videoSearch",
+      path: "/videoSearch"
+      template: "videoSearch"
+
+
 
 
 if Meteor.isClient

@@ -1,17 +1,9 @@
 
-head
-  title Video Maps
-  
-  //- link(type="text/css",rel="stylesheet",href="http://mediaelementjs.com/js/mejs-2.15.1/mediaelementplayer.min.css")
-  //- script(src="http://mediaelementjs.com/js/mejs-2.15.1/mediaelement-and-player.min.js")
-  
+template(name="layout")
+  +navBar
+  +yield
 
-  link(type="text/css",rel="stylesheet",href="https://vjs.zencdn.net/4.5.1/video-js.css")  
-  script(src="https://vjs.zencdn.net/4.5.1/video.js")
-  script(src="http://guaries.opennote.info/wp-content/uploads/2014/09/youtube.js")
-
-
-body
+template(name="navBar")
   .navbar.navbar-inverse.navbar-fixed-top
     .container
       .navbar-header
@@ -20,18 +12,21 @@ body
           span.icon-bar
           span.icon-bar
 
-        a.navbar-brand(href="#") VideoMaps
+        a.navbar-brand(href="/") VideoMaps
       .collapse.navbar-collapse
         ul.nav.navbar-nav
           li.nav.navbar-nav
-            a(href="#") Videos
+            a(href="#") Communities
+
+          li.nav.navbar-nav
+            a(href="/videoSearch") Search
           li.nav.navbar-nav
             a(href="#") Tags
           li.nav.navbar-nav
             a(href="#") Maps
-          li.nav.navbar-nav
-            a(href="#") Communities
           
+
+template(name="videoSearch")          
   .container
     
     .text-center
