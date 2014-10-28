@@ -10,4 +10,7 @@ waitingkuo:jade
 coffeescript
 mizzao:bootstrap-3
 iron:router
+accounts-meetup
+accounts-ui
+http
 

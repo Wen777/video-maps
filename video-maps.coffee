@@ -67,3 +67,77 @@ if Meteor.isClient
 # if Meteor.isServer
 #   if Videos.find().count() is 0
 #     Videos.insert xx for xx in youtubeVideos
+
+if Meteor.isServer
+  Accounts.onCreateUser (options, user) ->
+
+    console.log "user.services.meetup = "
+    console.log user.services.meetup
+    console.log user.services.meetup.id
+
+    userMeetupId = String(user.services.meetup.id)
+    userMeetupToken = user.services.meetup.accessToken
+
+    userProfileUrl = "https://api.meetup.com/2/member/" + userMeetupId + "?&sign=true&photo-host=public&access_token=" + userMeetupToken
+
+    console.log "userProfileUrl = "
+    console.log userProfileUrl
+
+    # userApiData = {}
+
+    res = Meteor.http.call "GET", userProfileUrl
+    # , {}, (error, response)->
+    #   if not error
+    #     # console.log "response = "
+    #     console.log JSON.parse(response.content)
+    #     # userApiData JSON.parse(response.content)
+    #     resData = JSON.parse(response.content)
+    #     userApiData.photo = resData.photo
+    #     user.meetupApiData = resData
+
+    # console.log "userApiData = "
+    # console.log userApiData
+
+    console.log "res = "
+    console.log res
+    console.log typeof res.content
+    console.log typeof JSON.parse res.content
+    resData = JSON.parse res.content
+    
+    user.services.meetup.apiData = {}
+    _.extend user.services.meetup.apiData, resData 
+
+    user.profile = {}
+
+    user.profile.name = resData.name
+    user.profile.hometown = resData.hometown
+    user.profile.photo = resData.photo
+    user.profile.link = resData.link
+    user.profile.city = resData.city
+    user.profile.country = resData.country
+    user.profile.joined = resData.joined
+    user.profile.topics = resData.topics
+    user.profile.other_services = resData.other_services
+    
+
+
+
+
+    user
+
+
+#     # if user.profile
+#     #   origin = user.services.facebook
+#     #   target = user.profile 
+#     #   allow_fields = ["email","last_name","first_name","gender","id","locale","link"]
+#     #   ((key)-> target[key]=origin[key])(one_key) for one_key in Object.keys(origin) when one_key in allow_fields
+#     #   target.picture = "http://graph.facebook.com/" + target.id + "/picture/?type=large"
+#     # else
+#     #   user.profile = {}
+#     #   origin = user.services.facebook
+#     #   target = user.profile 
+#     #   allow_fields = ["email","last_name","first_name","gender","id","locale","link"]
+#     #   ((key)-> target[key]=origin[key])(one_key) for one_key in Object.keys(origin) when one_key in allow_fields
+#     #   target.picture = "http://graph.facebook.com/" + target.id + "/picture/?type=large"
+    
+#     user  
