@@ -25,8 +25,12 @@ template(name="navBar")
           li.nav.navbar-nav
             a(href="#") Maps
 
-        .nav.navbar-nav.navbar-right
-          +loginButtons
+        ul.nav.navbar-nav.navbar-right
+          li.nav.navbar-nav
+            img(src="{{user.profile.photo.thumb_link}}")
+          li
+            +loginButtons
+
           
 
 template(name="videoSearch")          

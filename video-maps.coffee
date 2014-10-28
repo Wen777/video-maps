@@ -23,6 +23,9 @@ Meteor.startup ->
     @route "index",
       path: "/"
       template: "videoSearch"
+      data:
+        user: ->
+          Meteor.user()
 
     @route "videoSearch",
       path: "/videoSearch"
@@ -98,10 +101,13 @@ if Meteor.isServer
     # console.log "userApiData = "
     # console.log userApiData
 
-    console.log "res = "
-    console.log res
-    console.log typeof res.content
-    console.log typeof JSON.parse res.content
+
+
+
+    # console.log "res = "
+    # console.log res
+    # console.log typeof res.content
+    # console.log typeof JSON.parse res.content
     resData = JSON.parse res.content
     
     user.services.meetup.apiData = {}
