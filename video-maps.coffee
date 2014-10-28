@@ -28,7 +28,7 @@ if Meteor.isClient
 
     videoList: -> 
       searchWords = Session.get("searchWords")
-      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit : 20}
+      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit : 6}
 
   Template.search.events
     "change #searchWords": (e) ->
@@ -38,12 +38,15 @@ if Meteor.isClient
       # console.log e
       # console.log $(e.target).val()
 
+  # Template.video.rendered = ->
+  #   # console.log @data._id
+  #   video = Popcorn.youtube("#"+@data._id, 'http://www.youtube.com/embed/'+@data._id)
+  
   Template.video.rendered = ->
-    # console.log @data._id
-    video = Popcorn.youtube("#"+@data._id, 'http://www.youtube.com/embed/'+@data._id)
-    
+    $("video").map -> 
+      videojs @, JSON.parse($(@).attr("data-setup")) 
 
 
-# if Meteor.isServer
-#   if Videos.find().count() is 0
-#     Videos.insert xx for xx in youtubeVideos
+if Meteor.isServer
+  if Videos.find().count() is 0
+    Videos.insert xx for xx in youtubeVideos
