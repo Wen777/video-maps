@@ -12,7 +12,9 @@ youtubeVideos = [
   
 ]
 
-@Videos = new Meteor.Collection "ytVideo"
+@Videos = new Meteor.Collection "ytVideos"
+
+
 
 if Meteor.isClient
   Session.setDefault("searchWords",".*")
@@ -28,7 +30,7 @@ if Meteor.isClient
 
     videoList: -> 
       searchWords = Session.get("searchWords")
-      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit : 6}
+      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit : 40}
 
   Template.search.events
     "change #searchWords": (e) ->
@@ -47,6 +49,6 @@ if Meteor.isClient
       videojs @, JSON.parse($(@).attr("data-setup")) 
 
 
-if Meteor.isServer
-  if Videos.find().count() is 0
-    Videos.insert xx for xx in youtubeVideos
+# if Meteor.isServer
+#   if Videos.find().count() is 0
+#     Videos.insert xx for xx in youtubeVideos
