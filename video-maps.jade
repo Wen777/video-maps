@@ -44,7 +44,8 @@ template(name="videoSearch")
       +search
       
     br 
-    +videoList
+    //- +videoList
+    +videoPages
 
     //- .row.clearfix
     //-   .col-md-12.column
@@ -83,6 +84,13 @@ template(name="videoSearch")
     //-           iframe#ytplayer(type="text/html",width="350",height="225",src="http://www.youtube.com/embed/escsixrqG6M",frameborder="0",allowfullscreen, style="margin-bottom: -4px")
 
 
+template(name="videoPages")
+  +pagesNav
+  +pages
+  
+
+
+
 template(name="search")
   .input-group
     span.input-group-addon Search
@@ -101,13 +109,12 @@ template(name="videoList")
     .col-md-12.column
       .row
         each videoList
-      
-          .col-md-3
-            +video
+          +video
         
             
   
 template(name="video")
+  .col-md-3
     p {{title}}
     //- .thumbnail
       //- div.video(id="{{_id}}")

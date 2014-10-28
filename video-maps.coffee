@@ -13,6 +13,11 @@ youtubeVideos = [
 ]
 
 @Videos = new Meteor.Collection "ytVideos"
+@VideosPages = new Meteor.Pagination Videos,
+  perPage: 20
+  itemTemplate: "video"
+  templateName: "videoPages"  
+
 
 Router.configure
   layoutTemplate: 'layout'
@@ -26,10 +31,18 @@ Meteor.startup ->
       data:
         user: ->
           Meteor.user()
+      waitOn: -> 
+        Meteor.subscribe 'allVideos'
 
     @route "videoSearch",
       path: "/videoSearch"
       template: "videoSearch"
+      data:
+        user: ->
+          Meteor.user()
+      
+      waitOn: -> 
+        Meteor.subscribe 'allVideos'
 
 
 
@@ -48,7 +61,7 @@ if Meteor.isClient
 
     videoList: -> 
       searchWords = Session.get("searchWords")
-      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit : 40}
+      Videos.find {title:{$regex:searchWords,$options:"i"}}
 
   Template.search.events
     "change #searchWords": (e) ->
@@ -72,6 +85,9 @@ if Meteor.isClient
 #     Videos.insert xx for xx in youtubeVideos
 
 if Meteor.isServer
+  Meteor.publish "allVideos", ->
+    Videos.find()
+
   Accounts.onCreateUser (options, user) ->
 
     console.log "user.services.meetup = "

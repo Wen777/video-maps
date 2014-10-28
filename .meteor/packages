@@ -4,8 +4,6 @@
 # but you can also edit it by hand.
 
 meteor-platform
-autopublish
-insecure
 waitingkuo:jade
 coffeescript
 mizzao:bootstrap-3
@@ -13,4 +11,5 @@ iron:router
 accounts-meetup
 accounts-ui
 http
+alethes:pages
 
