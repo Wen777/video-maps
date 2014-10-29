@@ -13,6 +13,11 @@ youtubeVideos = [
 ]
 
 @Videos = new Meteor.Collection "ytVideos"
+
+# console.log "Meteor.Pagination = "
+# console.log Meteor.Pagination
+# console.log Meteor.Pagination::
+
 @VideosPages = new Meteor.Pagination Videos,
   perPage: 20
   itemTemplate: "video"
@@ -25,6 +30,10 @@ Router.configure
 
 Meteor.startup ->
   Router.map -> 
+    @route "allVideos",
+      path: "/allVideos"
+      template: "allVideos"
+
     @route "index",
       path: "/"
       template: "videoSearch"
@@ -32,7 +41,33 @@ Meteor.startup ->
         user: ->
           Meteor.user()
       waitOn: -> 
+        # # searchWords = Session.get("searchWords")
+        # # if not searchWords
+        # #   Session.set("searchWords", ".*")
+        # #   searchWords = Session.get("searchWords")
+
+        # nVideoPerPage = Session.get("nVideoPerPage")
+        # if not nVideoPerPage
+        #   Session.set("nVideoPerPage", 40)
+        #   nVideoPerPage = Session.get("nVideoPerPage")
+
+        # mPage = Session.get("mPage")
+        # if not mPage
+        #   Session.set("mPage", 1)
+        #   mPage = Session.get("mPage")
+
         Meteor.subscribe 'allVideos'
+ 
+    @route "videos",
+      path: "videos/:page?"
+      template: "videoSearch"
+      data:
+        user: ->
+          Meteor.user()
+      waitOn: -> 
+        mPage = parseInt(@params.page) || 0
+        Meteor.subscribe 'allVideos', mPage
+ 
 
     @route "videoSearch",
       path: "/videoSearch"
@@ -61,7 +96,8 @@ if Meteor.isClient
 
     videoList: -> 
       searchWords = Session.get("searchWords")
-      Videos.find {title:{$regex:searchWords,$options:"i"}}
+      Videos.find {title:{$regex:searchWords,$options:"i"}}, {limit:40}
+      # Videos.find()
 
   Template.search.events
     "change #searchWords": (e) ->
@@ -70,6 +106,11 @@ if Meteor.isClient
       Session.set("searchWords",newSearchWords)
       # console.log e
       # console.log $(e.target).val()
+
+
+  Template.search.helpers
+    nVideoPerPage: ->
+      Session.get("nVideoPerPage")
 
   # Template.video.rendered = ->
   #   # console.log @data._id
@@ -85,8 +126,28 @@ if Meteor.isClient
 #     Videos.insert xx for xx in youtubeVideos
 
 if Meteor.isServer
-  Meteor.publish "allVideos", ->
-    Videos.find()
+  Meteor.publish "allVideos", (mPage, limit) ->
+    
+    # totalVideos = Videos.find({title:{$regex:searchWords,$options:"i"}}).count()
+
+    # if nVideoPerPage < totalVideos
+    #   mPage = 0 
+    #   kSkips = nVideoPerPage*mPage
+    # else
+    #   kSkips = nVideoPerPage*mPage
+    #   while kSkips >= totalVideos
+    #     kSkips = kSkips - totalVideos
+
+    #   while kSkips < 0 
+    #     kSkips = kSkips + totalVideos
+    if not limit
+      limit = 40
+    
+    kSkips = limit*mPage
+    console.log "kSkips = "
+    console.log kSkips
+
+    Videos.find {}, {skip:kSkips, limit:limit}
 
   Accounts.onCreateUser (options, user) ->
 

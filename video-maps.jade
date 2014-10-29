@@ -16,6 +16,9 @@ template(name="navBar")
       .collapse.navbar-collapse
         ul.nav.navbar-nav
           li.nav.navbar-nav
+            a(href="{{pathFor 'allVideos'}}") All
+
+          li.nav.navbar-nav
             a(href="#") Communities
 
           li.nav.navbar-nav
@@ -33,6 +36,14 @@ template(name="navBar")
 
           
 
+
+template(name="allVideos")          
+  .container
+      
+    br 
+    +videoPages
+
+
 template(name="videoSearch")          
   .container
     
@@ -44,8 +55,8 @@ template(name="videoSearch")
       +search
       
     br 
-    //- +videoList
-    +videoPages
+    +videoList
+    //- +videoPages
 
     //- .row.clearfix
     //-   .col-md-12.column
@@ -93,9 +104,10 @@ template(name="videoPages")
 
 template(name="search")
   .input-group
-    span.input-group-addon Search
+    //- span.input-group-addon.prevPage Previous Page
+    span.input-group-addon Search Words 
     input#searchWords.form-control(type="text")
-    span.input-group-addon X
+    span.btn.btn-default.input-group-addon.nextPage Next Page
 
 
 template(name="videoList")
