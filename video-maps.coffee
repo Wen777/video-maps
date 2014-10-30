@@ -1,4 +1,6 @@
 
+@nPerPageDefault = 40
+@nPerPage = nPerPageDefault
 
 youtubeVideos = [
   {_id:"OCQU6M4pPiw", title:"r basic"},
@@ -24,6 +26,17 @@ youtubeVideos = [
   templateName: "videoPages"  
 
 
+Meteor.methods
+  "countNVideos": (query) ->
+    if not query
+      query = {}
+
+    console.log "Videos.find(query).count() = "
+    console.log Videos.find(query).count()
+
+    Videos.find(query).count()
+
+
 Router.configure
   layoutTemplate: 'layout'
     
@@ -38,6 +51,7 @@ Meteor.startup ->
       path: "/"
       template: "videoSearch"
       data:
+
         user: ->
           Meteor.user()
       waitOn: -> 
@@ -62,12 +76,39 @@ Meteor.startup ->
       path: "videos/:page?"
       template: "videoSearch"
       data:
+        isVideos: true
+
         user: ->
           Meteor.user()
+        countNVideos: ->
+          Session.get("countNVideos")
+
+        mPage: ->
+          Session.get("mPage")
+
+        startIdx: ->
+          mPage = Session.get("mPage")
+          mPage*nPerPage + 1
+        endIdx: -> 
+          mPage = Session.get("mPage")
+          (mPage+1)*nPerPage 
+        nextPage: ->
+          mPage = Session.get("mPage")
+          String(mPage + 1)
+        prevPage: ->
+          mPage = Session.get("mPage")
+          if mPage - 1 < 0 then "0" else String(mPage - 1)
+          
+            
+
       waitOn: -> 
         mPage = parseInt(@params.page) || 0
+        Session.set("mPage", mPage)
+
         Meteor.subscribe 'allVideos', mPage
- 
+        Meteor.call "countNVideos", (err, res) -> 
+          Session.set("countNVideos", res)
+          
 
     @route "videoSearch",
       path: "/videoSearch"
@@ -126,7 +167,7 @@ if Meteor.isClient
 #     Videos.insert xx for xx in youtubeVideos
 
 if Meteor.isServer
-  Meteor.publish "allVideos", (mPage, limit) ->
+  Meteor.publish "allVideos", (mPage, nPerPage) ->
     
     # totalVideos = Videos.find({title:{$regex:searchWords,$options:"i"}}).count()
 
@@ -140,14 +181,18 @@ if Meteor.isServer
 
     #   while kSkips < 0 
     #     kSkips = kSkips + totalVideos
-    if not limit
-      limit = 40
+    if not nPerPage
+      nPerPage = nPerPageDefault
+
+    if not mPage
+      mPage = 0 
     
-    kSkips = limit*mPage
+    kSkips = nPerPage*mPage
     console.log "kSkips = "
     console.log kSkips
 
-    Videos.find {}, {skip:kSkips, limit:limit}
+    Videos.find {}, {skip:kSkips, limit:nPerPage}
+    
 
   Accounts.onCreateUser (options, user) ->
 

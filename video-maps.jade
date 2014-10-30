@@ -16,7 +16,7 @@ template(name="navBar")
       .collapse.navbar-collapse
         ul.nav.navbar-nav
           li.nav.navbar-nav
-            a(href="{{pathFor 'allVideos'}}") All
+            a(href="{{pathFor 'videos'}}") All
 
           li.nav.navbar-nav
             a(href="#") Communities
@@ -53,6 +53,17 @@ template(name="videoSearch")
       p MLDM Monday, Taiwan useR Group, COSCUP, ... and other open source communities ...
     
       +search
+    
+  
+    .nav
+      ul.pager
+        li.previous 
+          a(href="{{pathFor 'videos' page=prevPage }}") Previous Page
+        li [Page {{mPage}} ] {{startIdx}} ~ {{endIdx}} over {{countNVideos}} Videos
+        li.next 
+          a(href="{{pathFor 'videos' page=nextPage }}") Next Page
+
+
       
     br 
     +videoList
