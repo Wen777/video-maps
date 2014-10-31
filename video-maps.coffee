@@ -33,7 +33,7 @@ Meteor.methods
 
     console.log "Videos.find(query).count() = "
     console.log Videos.find(query).count()
-
+    
     Videos.find(query).count()
 
 
@@ -192,7 +192,6 @@ if Meteor.isServer
     console.log kSkips
 
     Videos.find {}, {skip:kSkips, limit:nPerPage}
-    
 
   Accounts.onCreateUser (options, user) ->
 
