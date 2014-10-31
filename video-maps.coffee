@@ -105,8 +105,15 @@ Meteor.startup ->
         mPage = parseInt(@params.page) || 0
         Session.set("mPage", mPage)
 
-        Meteor.subscribe 'allVideos', mPage
-        Meteor.call "countNVideos", (err, res) -> 
+        searchWords = Session.get("searchWords")
+        if not searchWords
+          Session.set("searchWords", ".*")
+          searchWords = Session.get("searchWords")
+
+        qeury = {title:{$regex:searchWords,$options:"i"}}
+
+        Meteor.subscribe 'allVideos', mPage, nPerPage, qeury
+        Meteor.call "countNVideos", qeury, (err, res) -> 
           Session.set("countNVideos", res)
           
 
@@ -145,6 +152,7 @@ if Meteor.isClient
       e.stopPropagation()
       newSearchWords = $(e.target).val()
       Session.set("searchWords",newSearchWords)
+      Router.go 'videos', page:"0"
       # console.log e
       # console.log $(e.target).val()
 
@@ -167,7 +175,7 @@ if Meteor.isClient
 #     Videos.insert xx for xx in youtubeVideos
 
 if Meteor.isServer
-  Meteor.publish "allVideos", (mPage, nPerPage) ->
+  Meteor.publish "allVideos", (mPage, nPerPage, qeury) ->
     
     # totalVideos = Videos.find({title:{$regex:searchWords,$options:"i"}}).count()
 
@@ -187,11 +195,14 @@ if Meteor.isServer
     if not mPage
       mPage = 0 
     
+    if not qeury
+      qeury = {}
+
     kSkips = nPerPage*mPage
     console.log "kSkips = "
     console.log kSkips
 
-    Videos.find {}, {skip:kSkips, limit:nPerPage}
+    Videos.find qeury, {skip:kSkips, limit:nPerPage}
 
   Accounts.onCreateUser (options, user) ->
 
